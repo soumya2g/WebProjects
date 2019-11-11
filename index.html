@@ -116,7 +116,7 @@ var tabulate = function (data,columns) {
 }
 
 function loadData() {
-	d3.csv('https://raw.githubusercontent.com/soumya2g/WebProjects/master/data/presidents.csv',function (data) {
+	d3.csv('/data/presidents.csv',function (data) {
 		var columns = ['Name','Height','Weight']
 		tabulate(data,columns);
 	})
@@ -134,7 +134,7 @@ an alert box, and then print the result in a box or on the webpage. </h3>
 <script type="text/javascript">
 
 function getData() {
-	d3.csv("https://raw.githubusercontent.com/soumya2g/WebProjects/master/data/presidents.csv",function(data) {
+	d3.csv("/data/presidents.csv",function(data) {
 		var extData = [];
 		var name = document.getElementById("president").value;
 		var n = data.length;
