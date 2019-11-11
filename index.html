@@ -1,0 +1,175 @@
+<html>
+
+<!--
+DATA 608 - Assignment5
+Soumya Ghosh
+-->
+
+<head>
+	<link rel="stylesheet" href="style.css">
+	<title>DATA 608 - Assignment5 - Soumya Ghosh</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+
+<h1>DATA 608 - Assignment5 - Soumya Ghosh</h1>
+
+<h2>Part 1</h2>
+
+<h3>Problem 1: Create a function to reverse any word that you type in. 
+    This can be typed into either an input box or an alert box, and then print the result in a box or on the webpage. </h3>
+
+<button onclick="reverseWord()">Reverse Word</button>
+
+<p id="input"></p>
+<p id="output"></p>
+
+<script type="text/javascript">
+function reverseWord() {
+  var txt;
+  var word = prompt("Please enter a text:", "");
+  len = word.length;
+  
+  if (len == 0) {
+    txt = "User cancelled the prompt.";
+  } 
+  else {
+	var revword = "";
+	for (var i=0; i<len; i++){
+		revword += word[len-i-1];
+	}    
+    txt = "Reversed text is : " + revword;
+  }
+  document.getElementById("input").innerHTML = "Entered text: " + word;
+  document.getElementById("output").innerHTML = txt;
+}
+</script>
+
+<h3>Problem 2: Create a function that takes an input number, and prints a table with the first 20 multiples of the number, in order 5x4. </h3>
+
+<button onclick="printMultiples()">Print Multiples</button>
+
+<script type="text/javascript">
+function printMultiples() {
+  var rows = 5;
+  var cols = 4;
+  var num = parseInt(prompt("Please enter a number:", 0));
+  var txt = "";
+  
+  txt = '<table>';
+  txt += '<tr><td></td><td>Col1</td><td>Col_2</td><td>Col_3</td><td>Col_4</td></tr>';
+  for (var i = 0; i < rows; i++){
+	txt += '<tr><td> Row_'+ parseInt(i+1) +'</td>';
+	for (var j = 0; j < cols; j++){
+		txt = txt+'<td>'+num +'</td>';
+		num += 2
+	}
+    txt += '</tr><br>';
+  }
+  txt += '</table>';
+  
+  document.getElementById("target").innerHTML = txt;
+}
+</script>
+
+
+
+<div id="target"></div>
+
+<h2>Part2</h1>
+
+<h3>Problem 1: Write a function to load the presidents.csv data and display the data as an html table (you
+may use a cdv parser from any available library, though I encourage you to try the d3 one). </h3>
+
+
+<script type='text/javascript'>
+
+var tabulate = function (data,columns) {
+  var table = d3.select('body').append('table')
+	var thead = table.append('thead')
+	var tbody = table.append('tbody')
+
+	thead.append('tr')
+	  .selectAll('th')
+	    .data(columns)
+	    .enter()
+	  .append('th')
+	    .text(function (d) { return d })
+
+	var rows = tbody.selectAll('tr')
+	    .data(data)
+	    .enter()
+	  .append('tr')
+
+	var cells = rows.selectAll('td')
+	    .data(function(row) {
+	    	return columns.map(function (column) {
+	    		return { column: column, value: row[column] }
+	      })
+      })
+      .enter()
+    .append('td')
+      .text(function (d) { return d.value })
+
+  return table;
+}
+
+function loadData() {
+	d3.csv('/data/presidents.csv',function (data) {
+		var columns = ['Name','Height','Weight']
+		tabulate(data,columns);
+	})
+}
+
+</script>
+
+
+<button onclick="loadData()">Load President File</button>
+
+<h3>Problem 2: Now that you have the presidents data loaded, write a function that will return that
+president's height & weight when you type it in. This can be typed into either an input box or
+an alert box, and then print the result in a box or on the webpage. </h3>
+
+<script type="text/javascript">
+
+function getData() {
+	d3.csv("/data/presidents.csv",function(data) {
+		var extData = [];
+		var name = document.getElementById("president").value;
+		var n = data.length;
+		var txt = "";
+  
+		txt = '<table>';
+		txt += '<tr><td>Selected President</td><td>Height</td><td>Weight</td></tr>';
+		for(var i = 0; i < data.length; i++) {
+			if(name == data[i]["Name"]){
+				extData.push(data[i]);
+				break;
+			}
+		}
+		txt += '<tr><td>' +name+ '</td><td>' + extData[0]['Height'] +'</td><td>'+ extData[0]['Weight'] +'</td></tr><br>';
+		txt += '</table>';
+		document.getElementById("president-value").innerHTML = txt;
+	});
+}
+</script>
+
+<p>
+<form>
+	<label for="president">Enter President's Name:</label>
+    <input id="president" type="text" size="50">
+    <input type="button" value="Get Height & Weight" onClick="getData();">
+</form>
+</p>
+
+<script type='text/javascript'>
+
+</script>
+
+<div id="president-value"></div><br>
+
+
+</body>
+</html>
+
